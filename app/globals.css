@@ -1,0 +1,52 @@
+@import 'tailwindcss';
+
+/* An exam answer sheet: cool white paper, blue-black ballpoint ink, ruled lines, and the red
+   margin rule as the only accent. */
+@theme {
+  --color-paper: #f5f7fb;
+  --color-sheet: #ffffff;
+  --color-ink: #1b2a4a;
+  --color-ink-soft: #52627f;
+  --color-rule: #cdd9eb;
+  --color-margin: #c4323a;
+  --font-sans: 'Atkinson Hyperlegible Next Variable', system-ui, sans-serif;
+  --font-serif: 'Source Serif 4 Variable', Georgia, serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper: #0d1525;
+    --color-sheet: #131d31;
+    --color-ink: #e3e9f3;
+    --color-ink-soft: #9caac2;
+    --color-rule: #27354e;
+    --color-margin: #ff6f6f;
+  }
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-margin);
+  outline-offset: 2px;
+}
+
+/* Rows a search result points at */
+:target {
+  background: color-mix(in oklab, var(--color-margin) 10%, transparent);
+}
+
+/* FR-S-05a: rows far below the fold are not rendered until scrolled near */
+.lazy-row {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 4rem;
+}

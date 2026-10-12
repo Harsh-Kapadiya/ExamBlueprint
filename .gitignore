@@ -1,0 +1,9 @@
+node_modules/
+.next/
+next-env.d.ts
+*.tsbuildinfo
+# copied from Content/ at build time
+public/Content/
+.env*.local
+.env
+.vercel
