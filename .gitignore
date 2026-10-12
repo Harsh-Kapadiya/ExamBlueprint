@@ -7,3 +7,5 @@ public/Content/
 .env*.local
 .env
 .vercel
+# Claude desktop worktrees, never part of the project
+.claude/

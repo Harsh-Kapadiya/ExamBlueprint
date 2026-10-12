@@ -1,0 +1,40 @@
+# FR-B-05: after every push to main that adds or changes PDFs, compress and linearise them.
+# The commit this job makes uses GITHUB_TOKEN, which never re-triggers workflows, so it cannot loop.
+name: Optimise PDFs
+
+on:
+  push:
+    branches: [main]
+    paths: ['Content/**/*.pdf']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: optimise-pdfs
+  cancel-in-progress: false
+
+jobs:
+  optimise:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install Ghostscript and qpdf
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ghostscript qpdf
+
+      - name: Optimise the PDFs this push added or changed
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          git fetch --no-tags --depth=1 origin "$BEFORE"
+          git diff --name-only --diff-filter=AM -z "$BEFORE" HEAD -- 'Content/*.pdf' \
+            | xargs -0 -r -n1 bash scripts/optimise-pdf.sh
+
+      - name: Commit smaller files
+        run: |
+          git diff --quiet && { echo "Nothing got smaller."; exit 0; }
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "content: optimise $(git diff --name-only | wc -l) PDF(s)"
+          git push

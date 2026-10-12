@@ -1,0 +1,14 @@
+# FR-B-03: the same content rules the admin panel and the build use, on every pull request and push.
+name: Check content
+
+on: [pull_request, push]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - run: npm run check
