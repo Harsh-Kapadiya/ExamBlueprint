@@ -2,7 +2,7 @@
 
 A single, well-organised place where NIT Patna students can find previous-year question papers (PYQs) and study material, arranged by branch, semester and subject. All content lives in this repository; the website reads it from here.
 
-> **Document status:** Draft v0.5 · 12 October 2026 · Owner: Harsh
+> **Document status:** Draft v0.6 · 12 October 2026 · Owner: Harsh
 >
 > This README contains the Product Requirements Document (Part A) and the Software Requirements Specification (Part B). No application code will be written until this document has been reviewed and the open questions in [§A10](#a10-open-questions) have been answered.
 
@@ -46,6 +46,17 @@ Without a central source, question papers and notes circulate informally through
 - Comments, discussions, solutions or ratings.
 - Hosting copyrighted textbooks or paid material.
 - Native mobile applications.
+
+## A2.1 Point of view: "Handed down"
+
+pyq is what seniors pass to juniors the night before an exam: *the paper before the paper*. Its identity comes from exam-hall details and true counts, not from generic marketing copy.
+
+- **Voice:** a kind, dry senior. Plain English, no slang or in-jokes, never official-sounding (the site is unofficial).
+- **Vocabulary:** sharing a paper is *handing it down*; a missing paper is *left blank*; the 404 page is *out of syllabus*.
+- **Honesty:** the site never claims coverage it does not have. Every count is computed from the files at build time, and empty subjects say so.
+- **One accent:** ballpoint blue ink (`#2340C4` light, `#8EA2FF` dark) on the monochrome hero theme, used for filled bubbles, focus rings and the horizon.
+
+This direction came from a design council; the full record is in [docs/design-council.md](docs/design-council.md).
 
 ## A3. Users
 
@@ -384,13 +395,17 @@ The admin panel generates these names; admins do not type file names by hand.
 | FR-S-04 | The subject page shall group materials by category in the fixed order PYQs, notes, slides, assignments, lab, syllabus. PYQs shall be sorted by year, newest first, then by examination (end-semester, mid-semester, supplementary). Empty categories shall be hidden. | P0 |
 | FR-S-05 | Each material shall show its title, category, year and examination (for PYQs) and file size, with a **View** action that opens the file in the browser's built-in PDF viewer in a new tab and a **Download** action. | P0 |
 | FR-S-05a | Materials shall be loaded lazily: listing pages shall not fetch any PDF. On wide screens a **Preview** action shall load the PDF inline only when the student opens it, and opening one preview shall close any other. Off-screen list items shall not be rendered until scrolled near. | P0 |
-| FR-S-06 | A search control available on every page shall match the query, case-insensitively, against subject name, subject code, material title, year and examination, and shall link each result to the material and its subject page. The search index shall be loaded only when search is first used. | P0 |
+| FR-S-06 | A search control available on every page shall match the query, case-insensitively, against subject name, short name (folder name and initials, such as `dbms`, `daa`, `cn`), subject code, material title, year and examination (`endsem`, `end-sem`, `end semester`), and shall link each result to the material and its subject page. The search index shall be loaded only when search is first used. | P0 |
 | FR-S-07 | Every branch, semester and subject page shall have a stable, readable URL (for example `/CSE/sem3/data-structure`) and breadcrumb navigation. | P0 |
 | FR-S-08 | Unknown URLs shall return a 404 page with links to the home page and to search. | P0 |
 | FR-S-09 | The subject page shall offer filters by category, year and examination, and the filter state shall be reflected in the URL query string. | P1 |
 | FR-S-10 | Every page shall have a descriptive title and meta description, and the site shall publish a sitemap. | P1 |
 | FR-S-11 | The home page shall list the most recently added materials. | P2 |
-| FR-S-12 | Each subject page shall offer a "Report a problem or request a paper" link. | P2 |
+| FR-S-12 | Every empty subject, every blank bubble and the home page shall offer a *Hand one down* link that opens a prefilled GitHub issue naming the subject and paper. | P0 |
+| FR-S-13 | **Coverage sheet.** Each subject page shall show an OMR-style grid of years (the last five finished years plus any older year with a paper) against Mid, End and, once one exists, Supp. A filled bubble links to that paper's row; a blank bubble links to FR-S-12. Semester pages show a compact, non-interactive version with a text summary for screen readers. Rendered on the server; no JavaScript. | P0 |
+| FR-S-14 | **Share.** Every paper and every subject with files shall have a Share action that uses the device share sheet, or copies the link where none exists. A shared paper link opens the subject page with that paper highlighted. Subject pages publish an honest link-preview description (what the page actually contains). | P0 |
+| FR-S-15 | **Continue.** The home page shall offer "Continue with *subject*" for the last subject opened on this device, with a *Forget* control. Stored in localStorage only; the site works when storage is unavailable. | P1 |
+| FR-S-16 | Downloads shall be saved as `<subject>-<file>.pdf` (for example `dbms-2024-endsem.pdf`). | P0 |
 
 ### B4.2 Admin panel
 
@@ -446,7 +461,7 @@ The same validation module is used by the admin panel, the build and CI.
 | NFR-SEC-03 | Security | Secrets (`NEXTAUTH_SECRET` and the GitHub App credentials) shall exist only in the host's environment configuration and in an untracked `.env.local`. |
 | NFR-SEC-04 | Security | The site shall send a Content Security Policy and standard security headers. |
 | NFR-SEC-05 | Security | An admin's token can technically write anywhere in the repository; the restriction to `Content/` (FR-A-10) is enforced by the panel. Admin rights shall therefore be given only to trusted people with GitHub two-factor authentication enabled, and the allowlist shall be reviewed every semester. |
-| NFR-PRIV-01 | Privacy | The student side shall collect no personal data and set no cookies. Any analytics shall be cookie-less and aggregate. |
+| NFR-PRIV-01 | Privacy | The student side shall collect no personal data and set no cookies. The only thing stored is the last subject opened, in the browser's localStorage, which never leaves the device (FR-S-15). Any analytics shall be cookie-less and aggregate. |
 | NFR-A11Y-01 | Accessibility | The site shall meet WCAG 2.1 level AA: keyboard operable, visible focus, text contrast of at least 4.5:1, labelled controls and a semantic heading structure. |
 | NFR-UX-01 | Usability | The site shall be fully usable from 360 px width, with touch targets of at least 44 × 44 px. |
 | NFR-UX-02 | Usability | Every material shall be reachable within three clicks of the home page. |
@@ -564,6 +579,7 @@ Import the repository into Vercel, add the environment variables from [§B7.3](#
 | 0.3 | 12 October 2026 | First implementation: NextAuth v4 and its environment variable names; admin tools on one `/admin` page; subject code optional; Part D, "Running the project". |
 | 0.4 | 12 October 2026 | Content layout aligned with the repository's existing folders: `Content/<BRANCH>/sem<n>/<subject>/`; catalog filled with the 29 CSE subjects found there (Q6). |
 | 0.5 | 12 October 2026 | UI redesign around the supplied hero component: shadcn/ui structure, monochrome theme, graph-paper page headers, Geist, lucide icons (§B2.5, §B7.1). |
+| 0.6 | 13 October 2026 | "Handed down" concept from a design council (§A2.1): new copy throughout, roll-number semester boxes in the hero, coverage sheet (FR-S-13), share (FR-S-14), continue (FR-S-15), per-subject download names (FR-S-16), hand-one-down links now P0 (FR-S-12), search matches short names and exam ids, headline contrast fixed to AA. |
 
 ## Licence
 

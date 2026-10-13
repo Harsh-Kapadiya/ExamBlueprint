@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 import { loadContent } from '../lib/content.ts';
 import { commit } from '../lib/github.ts';
-import { adminLogins, check, pyqFile, slugify, type Catalog } from '../lib/rules.ts';
+import { adminLogins, check, downloadName, handDownUrl, pyqFile, sheetYears, slugify, yearSpan, type Catalog } from '../lib/rules.ts';
 
 const catalog: Catalog = {
   branches: [{ id: 'CSE', name: 'Computer Science and Engineering' }],
@@ -26,6 +26,10 @@ assert(!ok(`${dir}/notes/../../x.pdf`), 'path escape');
 assert(!ok(`${dir}/notes/unit-1.pdf`, 6 * 1024 * 1024 + 1), 'AC-10: over 6 MB');
 assert(!ok(`${dir}/notes/unit-1.pdf`, 1000, new Uint8Array([0x50, 0x4b, 3, 4, 20])), 'AC-04: Word file renamed to .pdf');
 assert.equal(pyqFile(2024, 'midsem', 3), '2024-midsem-3.pdf');
+assert.deepEqual(sheetYears([{ year: 2019 }, { year: 2024 }], 2026), [2019, 2021, 2022, 2023, 2024, 2025], 'last five finished years plus older ones that have papers');
+assert.equal(yearSpan([{ year: 2024 }, { year: 2022 }]), '2022 to 2024');
+assert.equal(downloadName({ subject: 'dbms', file: '2024-endsem.pdf' }), 'dbms-2024-endsem.pdf');
+assert(new URL(handDownUrl('DBMS', 3, 'End-semester 2023')).searchParams.get('title')!.includes('End-semester 2023'));
 assert.equal(slugify('Unit 1: Arrays & Lists.pdf'), 'unit-1-arrays-lists');
 assert.deepEqual(
   adminLogins(' https://github.com/Harsh-Kapadiya/, github.com/foo ,https://gitlab.com/x, https://github.com/a/b'),

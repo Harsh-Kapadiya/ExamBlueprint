@@ -6,16 +6,11 @@ export default function NotFound() {
   return (
     <PageHeader
       trail={[['/404', 'Not found']]}
-      title="No page here"
-      meta={
-        <>
-          The link may be old, or the subject may have moved. Press <kbd className="rounded-md border bg-muted px-1.5 text-sm">/</kbd> to search, or
-          start again from your semester.
-        </>
-      }
+      title="Out of syllabus."
+      meta="This page isn't on pyq. The link may be from an old forward, or mistyped. The paper itself could still be here: try Search at the top."
     >
       <Button asChild className="mt-8">
-        <Link href="/#semesters">Go to all semesters</Link>
+        <Link href="/">Back to semesters</Link>
       </Button>
     </PageHeader>
   );

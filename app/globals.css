@@ -25,7 +25,10 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.88 0 0);
   --ring: oklch(0.5 0 0);
-  --grid-line: #f0f0f0; /* the hero's grid colour */
+  --grid-line: #e6eaf5; /* faint blue, like quad-ruled exam paper */
+  --ink: #2340c4; /* ballpoint blue: the one accent. 8.1:1 on white */
+  --hero-end: #e8ebf3;
+  --hero-glow: #e8ebf3;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -48,7 +51,10 @@
     --border: oklch(1 0 0 / 12%);
     --input: oklch(1 0 0 / 18%);
     --ring: oklch(0.72 0 0);
-    --grid-line: #333;
+    --grid-line: #1a2030;
+    --ink: #8ea2ff; /* 8.8:1 on black */
+    --hero-end: #10172b; /* a dim navy horizon, not the original white flare at 1 a.m. */
+    --hero-glow: #1f2c5c;
   }
 }
 
@@ -72,6 +78,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-ink: var(--ink);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -79,7 +86,7 @@
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
   --font-geist: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
   /* The hero's entrance. `forwards` keeps the end state, because the elements start at opacity-0. */
-  --animate-fade-in: fade-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  --animate-fade-in: fade-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   --animate-fade-up: fade-up 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
@@ -116,7 +123,7 @@
     @apply bg-background font-sans text-foreground antialiased;
   }
   :focus-visible {
-    outline: 2px solid var(--ring);
+    outline: 2px solid var(--ink);
     outline-offset: 2px;
   }
 }
@@ -136,9 +143,10 @@
   color: transparent;
 }
 
-/* Rows a search result points at */
+/* The paper a shared link or a filled bubble points at */
 :target {
-  background: var(--accent);
+  background: color-mix(in oklab, var(--ink) 10%, transparent);
+  box-shadow: inset 3px 0 0 var(--ink);
 }
 
 /* FR-S-05a: rows far below the fold are not rendered until scrolled near */

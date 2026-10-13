@@ -39,11 +39,11 @@ export default function Search() {
   const status = failed
     ? 'Search could not load. Check your connection and try again.'
     : !index
-      ? 'Loading…'
+      ? 'Loading search (first time only)…'
       : !words.length
-        ? 'Type a subject name, a code or a year such as 2023.'
+        ? 'Type a subject, a short name like DAA, or an exam and year like "endsem 2023".'
         : !results.length
-          ? 'Nothing matches. Try fewer words.'
+          ? `Nothing for "${q.trim()}". Many subjects are still blank, so try just the subject name.`
           : '';
 
   return (
@@ -65,7 +65,7 @@ export default function Search() {
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Subject, code or year"
+            placeholder='Try "daa endsem" or "os 2023"'
             aria-label="Search papers and notes"
             className="h-14 flex-1 bg-transparent text-lg tracking-tight outline-none placeholder:text-muted-foreground"
           />

@@ -9,7 +9,7 @@ export const SEMESTERS = [1, 2, 3, 4, 5, 6, 7, 8];
 
 // Key order is the display order on the subject page (FR-S-04).
 export const CATEGORIES = {
-  pyq: 'Previous year papers',
+  pyq: 'Question papers',
   notes: 'Notes',
   slides: 'Lecture slides',
   assignments: 'Assignments and tutorials',
@@ -51,6 +51,33 @@ export const subjectDir = (s: Pick<Subject, 'branch' | 'semester' | 'slug'>) => 
 export const isPdf = (head: Uint8Array) => String.fromCharCode(...head.subarray(0, 5)) === '%PDF-';
 export const fmtSize = (b: number) => (b < 1024 * 1024 ? `${Math.max(1, Math.round(b / 1024))} KB` : `${(b / 1024 / 1024).toFixed(1)} MB`);
 export const anchor = (i: Pick<Item, 'category' | 'file'>) => `${i.category}-${i.file.replace(/\.pdf$/, '')}`;
+/** Saved file name, so a Downloads folder gets data-structure-2024-endsem.pdf rather than 2024-endsem (3).pdf */
+export const downloadName = (i: Pick<Item, 'subject' | 'file'>) => `${i.subject}-${i.file}`;
+
+/**
+ * "Hand one down": a prefilled GitHub issue for sending in a paper.
+ * ponytail: GitHub needs an account; swap for a Google Form URL here if non-coders don't use it.
+ */
+export const handDownUrl = (subject?: string, semester?: number, paper?: string) =>
+  `https://github.com/${REPO}/issues/new?${new URLSearchParams({
+    title: `Paper: ${[paper, subject && `${subject} (semester ${semester})`].filter(Boolean).join(', ')}`,
+    body: `Subject: ${subject ? `${subject}, semester ${semester}` : ''}\nPaper: ${paper ?? ''}\n\nAttach the PDF below (6 MB at most). Only share papers you are allowed to share.`,
+  })}`;
+
+/** Columns of a coverage sheet: the last five finished years, plus any other year that has a paper. */
+export function sheetYears(papers: Pick<Item, 'year'>[], now = new Date().getFullYear()) {
+  const years = new Set([5, 4, 3, 2, 1].map((k) => now - k));
+  for (const p of papers) if (p.year) years.add(p.year);
+  return [...years].sort((a, b) => a - b);
+}
+
+/** "2022 to 2024", "2023", or "" */
+export const yearSpan = (papers: Pick<Item, 'year'>[]) => {
+  const ys = papers.map((p) => p.year!).filter(Boolean);
+  if (!ys.length) return '';
+  const lo = Math.min(...ys), hi = Math.max(...ys);
+  return lo === hi ? String(lo) : `${lo} to ${hi}`;
+};
 export const plural =(n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 /** Lowercased GitHub logins from a comma-separated list of profile URLs (FR-A-01). Anything else is ignored, so a typo locks out rather than lets in. */
