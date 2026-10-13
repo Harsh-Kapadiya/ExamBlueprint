@@ -2,7 +2,7 @@
 
 A single, well-organised place where NIT Patna students can find previous-year question papers (PYQs) and study material, arranged by branch, semester and subject. All content lives in this repository; the website reads it from here.
 
-> **Document status:** Draft v0.4 · 12 October 2026 · Owner: Harsh
+> **Document status:** Draft v0.5 · 12 October 2026 · Owner: Harsh
 >
 > This README contains the Product Requirements Document (Part A) and the Software Requirements Specification (Part B). No application code will be written until this document has been reviewed and the open questions in [§A10](#a10-open-questions) have been answered.
 
@@ -255,7 +255,7 @@ sequenceDiagram
 | Layer | Choice | Reason |
 |-------|--------|--------|
 | Framework | Next.js (App Router) with TypeScript | Static generation for student pages, server routes for admin authentication |
-| Styling | Tailwind CSS | No runtime cost; consistent design tokens |
+| Styling | Tailwind CSS 4 with the shadcn/ui structure (`components/ui`, `components.json`), Geist and lucide icons | No runtime cost; consistent design tokens; new shadcn components drop straight in |
 | Authentication | NextAuth.js (v4, the stable release) using a GitHub App as the provider | Admin identity is the GitHub identity; tokens are limited to this repository |
 | GitHub access | GitHub REST API through `fetch` | A handful of calls does not justify an SDK |
 | Search | Client-side filtering of the generated JSON index | No search service required; the index is small |
@@ -461,7 +461,7 @@ The same validation module is used by the admin panel, the build and CI.
 
 ### B7.1 User interfaces
 
-The student and admin pages listed in [§A6](#a6-information-architecture). Visual design follows a clean, minimal layout with one consistent type scale and colour palette, in light and dark themes.
+The student and admin pages listed in [§A6](#a6-information-architecture). The visual design follows the home page hero (`components/ui/hero-1.tsx`): a monochrome palette, a graph-paper grid behind page headers, gradient display type and the Geist typeface. Light and dark themes follow the device setting, and the hero's entrance animation is skipped when the device asks for reduced motion.
 
 ### B7.2 Software interfaces
 
@@ -517,7 +517,9 @@ The student and admin pages listed in [§A6](#a6-information-architecture). Visu
 |------|------------|
 | `Content/` | The site's data: `catalog.json` and every PDF |
 | `app/` | Pages: home, semester, subject, search index, admin |
-| `components/` | Search box, lazy PDF preview, admin panel |
+| `components/` | Page header, breadcrumbs, search box, lazy PDF preview, admin panel |
+| `components/ui/` | shadcn/ui primitives: `button.tsx` and the home page hero `hero-1.tsx` |
+| `lib/utils.ts` | `cn()`, shadcn's class-name helper |
 | `lib/rules.ts` | Every content rule, shared by the admin panel, the build and CI |
 | `lib/content.ts` | Reads `Content/` at build time |
 | `lib/github.ts` | The admin panel's calls to the GitHub API |
@@ -561,6 +563,7 @@ Import the repository into Vercel, add the environment variables from [§B7.3](#
 | 0.2 | 12 October 2026 | File limit lowered to 6 MB; admins identified by GitHub profile URL in `ADMIN_GITHUB_PROFILES`; automatic PDF compression and linearisation (FR-B-05); lazy loading of materials (FR-S-05a, NFR-PERF-05); sequential uploads (FR-A-04); acceptance criteria AC-09 to AC-12. |
 | 0.3 | 12 October 2026 | First implementation: NextAuth v4 and its environment variable names; admin tools on one `/admin` page; subject code optional; Part D, "Running the project". |
 | 0.4 | 12 October 2026 | Content layout aligned with the repository's existing folders: `Content/<BRANCH>/sem<n>/<subject>/`; catalog filled with the 29 CSE subjects found there (Q6). |
+| 0.5 | 12 October 2026 | UI redesign around the supplied hero component: shadcn/ui structure, monochrome theme, graph-paper page headers, Geist, lucide icons (§B2.5, §B7.1). |
 
 ## Licence
 

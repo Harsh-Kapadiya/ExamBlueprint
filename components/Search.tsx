@@ -1,6 +1,8 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { CornerDownLeft, FileText, Library, Search as SearchIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 type Entry = { label: string; where: string; href: string; key: string };
 
@@ -38,26 +40,26 @@ export default function Search() {
     ? 'Search could not load. Check your connection and try again.'
     : !index
       ? 'Loading…'
-      : words.length && !results.length
-        ? 'Nothing matches. Try a subject name, a code or a year such as 2023.'
-        : '';
+      : !words.length
+        ? 'Type a subject name, a code or a year such as 2023.'
+        : !results.length
+          ? 'Nothing matches. Try fewer words.'
+          : '';
 
   return (
     <>
-      <button
-        type="button"
-        onClick={open}
-        className="flex min-h-11 items-center gap-3 border-[1.5px] border-ink bg-sheet px-3 text-sm hover:border-margin"
-      >
+      <Button type="button" variant="outline" size="sm" onClick={open} className="gap-2 rounded-full pr-2 text-muted-foreground">
+        <SearchIcon aria-hidden className="size-4" />
         Search
-        <kbd className="hidden border border-rule px-1.5 font-sans text-xs text-ink-soft sm:inline">/</kbd>
-      </button>
+        <kbd className="hidden rounded-md border bg-muted px-1.5 font-sans text-xs sm:inline">/</kbd>
+      </Button>
       <dialog
         ref={dialog}
         aria-label="Search"
-        className="m-auto mt-[10vh] w-[min(36rem,calc(100%-2rem))] border-[1.5px] border-ink bg-sheet p-0 text-ink backdrop:bg-ink/40"
+        className="m-auto mt-[12vh] w-[min(38rem,calc(100%-2rem))] overflow-hidden rounded-xl border bg-popover p-0 text-popover-foreground shadow-2xl backdrop:bg-black/40 backdrop:backdrop-blur-sm"
       >
-        <div className="flex items-center gap-2 border-b border-rule p-2">
+        <div className="flex items-center gap-2 border-b px-3">
+          <SearchIcon aria-hidden className="size-5 shrink-0 text-muted-foreground" />
           <input
             autoFocus
             type="search"
@@ -65,25 +67,38 @@ export default function Search() {
             onChange={(e) => setQ(e.target.value)}
             placeholder="Subject, code or year"
             aria-label="Search papers and notes"
-            className="min-h-11 flex-1 bg-transparent px-2 text-lg outline-none"
+            className="h-14 flex-1 bg-transparent text-lg tracking-tight outline-none placeholder:text-muted-foreground"
           />
           <form method="dialog">
-            <button className="min-h-11 px-3 text-sm text-ink-soft hover:text-ink">Close</button>
+            <Button variant="ghost" size="sm" className="text-muted-foreground">
+              Close
+            </Button>
           </form>
         </div>
-        <p role="status" className="px-4 empty:hidden py-3 text-sm text-ink-soft">
+        <p role="status" className="px-4 py-3 text-sm text-muted-foreground empty:hidden">
           {status}
         </p>
         {results.length > 0 && (
-          <ul className="max-h-[60vh] overflow-y-auto">
-            {results.map((r) => (
-              <li key={r.href} className="border-b border-rule last:border-0">
-                <Link href={r.href} onClick={() => dialog.current?.close()} className="block px-4 py-3 hover:bg-paper">
-                  <span className="block">{r.label}</span>
-                  <span className="block text-sm text-ink-soft">{r.where}</span>
-                </Link>
-              </li>
-            ))}
+          <ul className="max-h-[60vh] overflow-y-auto p-2">
+            {results.map((r) => {
+              const Icon = r.href.includes('#') ? FileText : Library;
+              return (
+                <li key={r.href}>
+                  <Link
+                    href={r.href}
+                    onClick={() => dialog.current?.close()}
+                    className="group flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-accent focus-visible:bg-accent"
+                  >
+                    <Icon aria-hidden className="size-4 shrink-0 text-muted-foreground" />
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate">{r.label}</span>
+                      <span className="block truncate text-sm text-muted-foreground">{r.where}</span>
+                    </span>
+                    <CornerDownLeft aria-hidden className="size-4 text-muted-foreground opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100" />
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         )}
       </dialog>

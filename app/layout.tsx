@@ -1,5 +1,4 @@
-import '@fontsource-variable/source-serif-4';
-import '@fontsource-variable/atkinson-hyperlegible-next';
+import '@fontsource-variable/geist';
 import './globals.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -14,28 +13,28 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-dvh">
-        {/* The answer sheet's red margin rule */}
-        <div aria-hidden className="fixed inset-y-0 left-[max(2rem,calc(50%-22rem))] hidden w-px bg-margin/60 md:block" />
-        <div className="mx-auto max-w-3xl px-4 md:pl-12">
-          <header className="flex items-center justify-between gap-4 py-6">
-            <Link href="/" className="group flex items-baseline gap-2 rounded-sm">
-              <span className="font-serif text-2xl font-bold tracking-tight">pyq</span>
-              <span className="text-sm text-ink-soft group-hover:text-ink">NIT Patna</span>
+      <body className="flex min-h-dvh flex-col">
+        <header className="sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur-md">
+          <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 md:px-6">
+            <Link href="/" className="flex items-baseline gap-2 rounded-md">
+              <span className="text-xl font-semibold tracking-tighter">pyq</span>
+              <span className="text-sm tracking-tight text-muted-foreground">NIT Patna</span>
             </Link>
             <Search />
-          </header>
-          <main className="pb-24">{children}</main>
-          <footer className="border-t border-rule py-8 text-sm text-ink-soft">
-            <p className="max-w-prose">
-              Run by students, free for every student. Found a wrong file, or own something that should not be here?{' '}
-              <a className="underline decoration-rule underline-offset-4 hover:text-ink" href={`https://github.com/${REPO}/issues`}>
+          </div>
+        </header>
+        <main className="flex-1">{children}</main>
+        <footer className="border-t">
+          <div className="mx-auto flex max-w-6xl flex-wrap justify-between gap-x-8 gap-y-2 px-4 py-8 text-sm text-muted-foreground md:px-6">
+            <p>Run by students, free for every student.</p>
+            <p>
+              Wrong file, or something that should not be here?{' '}
+              <a className="text-foreground underline underline-offset-4 hover:no-underline" href={`https://github.com/${REPO}/issues`}>
                 Tell us on GitHub
               </a>
-              .
             </p>
-          </footer>
-        </div>
+          </div>
+        </footer>
       </body>
     </html>
   );

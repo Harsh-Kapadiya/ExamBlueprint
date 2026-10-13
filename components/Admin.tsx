@@ -1,7 +1,9 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
-import AuthButton from './AuthButton';
+import { CircleAlert, CircleCheck, LoaderCircle, Trash2, Upload as UploadIcon } from 'lucide-react';
+import { buttonVariants } from '@/components/ui/button';
 import { commit, readRepo, type Change } from '@/lib/github';
+import { cn } from '@/lib/utils';
 import {
   CATEGORIES,
   check,
@@ -23,16 +25,18 @@ import {
 type Repo = { files: Map<string, number>; catalog: Catalog };
 type Run = (message: string, changes: Change[]) => Promise<boolean>;
 
-const field = 'min-h-11 border-[1.5px] border-ink bg-sheet px-2 text-base text-ink';
-const label = 'flex flex-col gap-1 text-sm text-ink-soft';
-const primary =
-  'min-h-11 border-[1.5px] border-ink bg-ink px-5 text-paper hover:border-margin hover:bg-margin disabled:cursor-not-allowed disabled:opacity-40';
-const quiet = 'inline-flex min-h-11 cursor-pointer items-center px-2 underline decoration-rule underline-offset-4 hover:text-margin focus-within:outline-2';
+// shadcn-style form controls in the site theme
+const field =
+  'h-11 rounded-md border border-input bg-background px-3 text-base text-foreground shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:h-10 md:text-sm';
+const label = 'flex flex-col gap-1.5 text-sm font-medium tracking-tight';
+const primary = cn(buttonVariants(), 'h-11 gap-2 px-5 md:h-10');
+const quiet = cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'h-11 cursor-pointer gap-1.5 md:h-9 focus-within:ring-2 focus-within:ring-ring');
+const empty = 'rounded-lg border border-dashed p-5 text-sm text-muted-foreground';
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
-    <section aria-labelledby={id} className="mt-12 border-t-[1.5px] border-ink pt-6">
-      <h2 id={id} className="mb-4 font-serif text-2xl font-semibold">
+    <section aria-labelledby={id} className="rounded-xl border bg-card p-5 md:p-6">
+      <h2 id={id} className="mb-5 text-xl font-semibold tracking-tighter md:text-2xl">
         {title}
       </h2>
       {children}
@@ -40,7 +44,7 @@ function Section({ id, title, children }: { id: string; title: string; children:
   );
 }
 
-export default function Admin({ token, login }: { token: string; login: string }) {
+export default function Admin({ token }: { token: string }) {
   const [repo, setRepo] = useState<Repo | null>(null);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState<{ text: string; url: string } | null>(null);
@@ -86,39 +90,48 @@ export default function Admin({ token, login }: { token: string; login: string }
     .sort((a, b) => a.name.localeCompare(b.name));
   const subject = subjects.find((s) => s.slug === slug);
 
-  return (
-    <>
-      <div className="flex flex-wrap items-end justify-between gap-4 pt-6">
-        <div>
-          <h1 className="font-serif text-4xl font-semibold">Admin</h1>
-          <p className="mt-2 text-ink-soft">Signed in as {login}</p>
-        </div>
-        <AuthButton action="out" />
-      </div>
+  const banner = 'flex items-start gap-3 rounded-lg border bg-card px-4 py-3 text-sm shadow-sm [&_svg]:mt-0.5 [&_svg]:size-4 [&_svg]:shrink-0';
 
-      <div className="sticky top-0 z-10 mt-6 bg-paper py-2" aria-live="polite">
-        {busy && <p className="border-l-2 border-ink pl-3">{busy}</p>}
+  return (
+    <div className="mx-auto max-w-6xl space-y-6 px-4 py-10 md:px-6">
+      {/* Progress and results stay in view while scrolling, just under the site header */}
+      <div className="sticky top-16 z-30 space-y-2 empty:hidden" aria-live="polite">
+        {busy && (
+          <p className={banner}>
+            <LoaderCircle aria-hidden className="animate-spin" />
+            {busy}
+          </p>
+        )}
         {error && (
-          <p role="alert" className="border-l-2 border-margin pl-3 text-margin">
+          <p role="alert" className={cn(banner, 'border-destructive/50 text-destructive')}>
+            <CircleAlert aria-hidden />
             {error}
           </p>
         )}
         {notice && (
-          <p className="border-l-2 border-ink pl-3">
-            {notice.text}{' '}
-            <a href={notice.url} target="_blank" rel="noopener" className="underline underline-offset-4">
-              See the commit
-            </a>
+          <p className={banner}>
+            <CircleCheck aria-hidden />
+            <span>
+              {notice.text}{' '}
+              <a href={notice.url} target="_blank" rel="noopener" className="font-medium underline underline-offset-4">
+                See the commit
+              </a>
+            </span>
           </p>
         )}
       </div>
 
       {!repo ? (
-        !error && <p className="mt-6 text-ink-soft">Reading the repository…</p>
+        !error && (
+          <p className="flex items-center gap-2 text-muted-foreground">
+            <LoaderCircle aria-hidden className="size-4 animate-spin" />
+            Reading the repository…
+          </p>
+        )
       ) : (
         <>
-          <fieldset className="mt-6 flex flex-wrap gap-4">
-            <legend className="mb-3 font-serif text-xl font-semibold">Working on</legend>
+          <fieldset className="flex flex-wrap gap-4 rounded-xl border bg-card p-5 md:p-6">
+            <legend className="sr-only">Working on</legend>
             {repo.catalog.branches.length > 1 && (
               <label className={label}>
                 Branch
@@ -155,17 +168,17 @@ export default function Admin({ token, login }: { token: string; login: string }
           </fieldset>
 
           <Section id="upload" title="Upload">
-            {subject ? <Upload subject={subject} repo={repo} busy={!!busy} run={run} /> : <p className="text-ink-soft">Choose a subject first.</p>}
+            {subject ? <Upload subject={subject} repo={repo} busy={!!busy} run={run} /> : <p className={empty}>Choose a subject first.</p>}
           </Section>
           <Section id="materials" title="Uploaded files">
-            {subject ? <Materials subject={subject} repo={repo} busy={!!busy} run={run} /> : <p className="text-ink-soft">Choose a subject first.</p>}
+            {subject ? <Materials subject={subject} repo={repo} busy={!!busy} run={run} /> : <p className={empty}>Choose a subject first.</p>}
           </Section>
           <Section id="subjects" title={`Subjects in semester ${semester}`}>
             <Subjects branch={branch} semester={semester} subjects={subjects} repo={repo} busy={!!busy} run={run} />
           </Section>
         </>
       )}
-    </>
+    </div>
   );
 }
 
@@ -232,17 +245,17 @@ function Upload({ subject, repo, busy, run }: Props) {
         </label>
         <label className={label}>
           PDF files, up to 6 MB each
-          <input key={inputKey} type="file" accept="application/pdf,.pdf" multiple className={`${field} py-2`} onChange={(e) => add(e.target.files)} />
+          <input key={inputKey} type="file" accept="application/pdf,.pdf" multiple className={cn(field, "py-2 file:mr-3 file:rounded file:border-0 file:bg-muted file:px-2 file:text-sm file:text-foreground")} onChange={(e) => add(e.target.files)} />
         </label>
       </div>
 
       {rows.length > 0 && (
-        <ul className="mt-6 border-t border-rule">
+        <ul className="mt-6 divide-y rounded-lg border">
           {rows.map((r, i) => (
-            <li key={i} className="border-b border-rule py-4">
+            <li key={i} className="p-4">
               <div className="flex flex-wrap items-end gap-3">
-                <p className="mr-auto basis-full sm:basis-auto">
-                  {r.file.name} <span className="text-sm text-ink-soft">{fmtSize(r.file.size)}</span>
+                <p className="mr-auto basis-full font-medium sm:basis-auto">
+                  {r.file.name} <span className="text-sm text-muted-foreground">{fmtSize(r.file.size)}</span>
                 </p>
                 {category === 'pyq' ? (
                   <>
@@ -272,23 +285,24 @@ function Upload({ subject, repo, busy, run }: Props) {
                   </label>
                 )}
                 {repo.files.has(paths[i]) && (
-                  <label className="flex min-h-11 items-center gap-2">
-                    <input type="checkbox" checked={r.replace} onChange={(e) => update(i, { replace: e.target.checked })} /> Replace
+                  <label className="flex min-h-11 items-center gap-2 text-sm">
+                    <input type="checkbox" className="size-4 accent-current" checked={r.replace} onChange={(e) => update(i, { replace: e.target.checked })} /> Replace
                   </label>
                 )}
                 <button type="button" className={quiet} onClick={() => setRows(rows.filter((_, j) => j !== i))}>
                   Remove from list
                 </button>
               </div>
-              <p className="mt-2 text-sm break-all text-ink-soft">Saves as {paths[i]}</p>
-              {problems[i] && <p className="mt-1 text-sm text-margin">{problems[i]}</p>}
+              <p className="mt-2 text-sm break-all text-muted-foreground">Saves as {paths[i]}</p>
+              {problems[i] && <p className="mt-1 flex items-center gap-1.5 text-sm text-destructive"><CircleAlert aria-hidden className="size-4" />{problems[i]}</p>}
             </li>
           ))}
         </ul>
       )}
 
-      {rows.length > MAX_FILES && <p className="mt-4 text-margin">Upload at most {MAX_FILES} files at a time.</p>}
-      <button type="button" className={`${primary} mt-6`} disabled={!ready} onClick={upload}>
+      {rows.length > MAX_FILES && <p className="mt-4 text-destructive">Upload at most {MAX_FILES} files at a time.</p>}
+      <button type="button" className={cn(primary, "mt-6")} disabled={!ready} onClick={upload}>
+        <UploadIcon aria-hidden className="size-4" />
         Upload {rows.length ? plural(rows.length, 'file') : 'files'}
       </button>
     </>
@@ -315,15 +329,15 @@ function Materials({ subject, repo, busy, run }: Props) {
     await run(`content: delete ${path.slice(8)}`, [{ path, data: null }]);
   };
 
-  if (!list.length) return <p className="text-ink-soft">Nothing uploaded for {subject.name} yet.</p>;
+  if (!list.length) return <p className={empty}>Nothing uploaded for {subject.name} yet.</p>;
   return (
-    <ul className="border-t border-rule">
+    <ul className="divide-y rounded-lg border">
       {list.map(([path, bytes]) => (
-        <li key={path} className="flex flex-wrap items-center gap-x-2 border-b border-rule py-2">
-          <span className="mr-auto py-2 break-all">
-            {path.slice(prefix.length)} <span className="ml-2 text-sm text-ink-soft">{fmtSize(bytes)}</span>
+        <li key={path} className="flex flex-wrap items-center gap-x-1 px-4 py-1.5">
+          <span className="mr-auto py-2 break-all text-sm">
+            {path.slice(prefix.length)} <span className="ml-2 text-sm text-muted-foreground">{fmtSize(bytes)}</span>
           </span>
-          <label className={`${quiet} ${busy ? 'pointer-events-none opacity-40' : ''}`}>
+          <label className={cn(quiet, busy && 'pointer-events-none opacity-40')}>
             Replace
             <input
               type="file"
@@ -334,6 +348,7 @@ function Materials({ subject, repo, busy, run }: Props) {
             />
           </label>
           <button type="button" className={quiet} disabled={busy} onClick={() => remove(path)}>
+            <Trash2 aria-hidden className="size-4" />
             Delete
           </button>
         </li>
@@ -365,7 +380,7 @@ function Subjects({ branch, semester, subjects, repo, busy, run }: { branch: str
   return (
     <>
       {subjects.length > 0 && (
-        <ul className="mb-8 border-t border-rule">
+        <ul className="mb-6 divide-y rounded-lg border">
           {subjects.map((s) => (
             <SubjectRow
               key={s.slug}
@@ -395,7 +410,7 @@ function Subjects({ branch, semester, subjects, repo, busy, run }: { branch: str
         </button>
       </div>
       {name && (
-        <p className={`mt-2 text-sm ${taken ? 'text-margin' : 'text-ink-soft'}`}>
+        <p className={cn('mt-2 text-sm', taken ? 'text-destructive' : 'text-muted-foreground')}>
           {taken ? 'This semester already has a subject with that name.' : `Its address will be /${branch}/sem${semester}/${slug}. This cannot be changed later.`}
         </p>
       )}
@@ -408,7 +423,7 @@ function SubjectRow({ subject, busy, onSave }: { subject: Subject; busy: boolean
   const [code, setCode] = useState(subject.code);
   const changed = name.trim() !== subject.name || code.trim() !== subject.code;
   return (
-    <li className="flex flex-wrap items-end gap-3 border-b border-rule py-3">
+    <li className="flex flex-wrap items-end gap-3 p-4">
       <label className={`${label} min-w-56 flex-1`}>
         Name
         <input value={name} onChange={(e) => setName(e.target.value)} className={field} />

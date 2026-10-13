@@ -1,14 +1,18 @@
 'use client';
 import { signIn, signOut } from 'next-auth/react';
+import { LogIn, LogOut } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function AuthButton({ action }: { action: 'in' | 'out' }) {
-  return (
-    <button
-      type="button"
-      onClick={() => (action === 'in' ? signIn('github', { callbackUrl: '/admin' }) : signOut({ callbackUrl: '/' }))}
-      className="min-h-11 border-[1.5px] border-ink px-4 hover:border-margin hover:text-margin"
-    >
-      {action === 'in' ? 'Sign in with GitHub' : 'Sign out'}
-    </button>
+  return action === 'in' ? (
+    <Button type="button" size="lg" className="gap-2" onClick={() => signIn('github', { callbackUrl: '/admin' })}>
+      <LogIn aria-hidden className="size-4" />
+      Sign in with GitHub
+    </Button>
+  ) : (
+    <Button type="button" variant="outline" className="gap-2" onClick={() => signOut({ callbackUrl: '/' })}>
+      <LogOut aria-hidden className="size-4" />
+      Sign out
+    </Button>
   );
 }
