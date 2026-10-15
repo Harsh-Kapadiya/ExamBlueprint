@@ -1,42 +1,213 @@
 {
   "branches": [
-    { "id": "CSE", "name": "Computer Science and Engineering" }
+    {
+      "id": "CSE",
+      "name": "Computer Science and Engineering"
+    }
   ],
   "subjects": [
-    { "branch": "CSE", "semester": 1, "slug": "c", "code": "", "name": "C Programming" },
-    { "branch": "CSE", "semester": 1, "slug": "chemistry", "code": "", "name": "Chemistry" },
-    { "branch": "CSE", "semester": 1, "slug": "digital-design", "code": "", "name": "Digital Design" },
-    { "branch": "CSE", "semester": 1, "slug": "engg-math-1", "code": "", "name": "Engineering Mathematics I" },
-    { "branch": "CSE", "semester": 1, "slug": "it-workshop", "code": "", "name": "IT Workshop" },
-
-    { "branch": "CSE", "semester": 2, "slug": "coa", "code": "", "name": "Computer Organization and Architecture" },
-    { "branch": "CSE", "semester": 2, "slug": "communicative-english", "code": "", "name": "Communicative English" },
-    { "branch": "CSE", "semester": 2, "slug": "engg-math-2", "code": "", "name": "Engineering Mathematics II" },
-    { "branch": "CSE", "semester": 2, "slug": "engg-physics", "code": "", "name": "Engineering Physics" },
-    { "branch": "CSE", "semester": 2, "slug": "web-tech", "code": "", "name": "Web Technology" },
-
-    { "branch": "CSE", "semester": 3, "slug": "data-structure", "code": "", "name": "Data Structures" },
-    { "branch": "CSE", "semester": 3, "slug": "dbms", "code": "", "name": "Database Management Systems" },
-    { "branch": "CSE", "semester": 3, "slug": "dmgt", "code": "", "name": "DMGT" },
-    { "branch": "CSE", "semester": 3, "slug": "ethics", "code": "", "name": "Ethics" },
-    { "branch": "CSE", "semester": 3, "slug": "oop", "code": "", "name": "Object-Oriented Programming" },
-    { "branch": "CSE", "semester": 3, "slug": "os", "code": "", "name": "Operating Systems" },
-
-    { "branch": "CSE", "semester": 4, "slug": "ai", "code": "", "name": "Artificial Intelligence" },
-    { "branch": "CSE", "semester": 4, "slug": "atcd", "code": "", "name": "ATCD" },
-    { "branch": "CSE", "semester": 4, "slug": "computer-network", "code": "", "name": "Computer Networks" },
-    { "branch": "CSE", "semester": 4, "slug": "daa", "code": "", "name": "Design and Analysis of Algorithms" },
-
-    { "branch": "CSE", "semester": 5, "slug": "information-security", "code": "", "name": "Information Security" },
-    { "branch": "CSE", "semester": 5, "slug": "iot", "code": "", "name": "Internet of Things" },
-    { "branch": "CSE", "semester": 5, "slug": "machine-learning", "code": "", "name": "Machine Learning" },
-    { "branch": "CSE", "semester": 5, "slug": "non-conventional-energy", "code": "", "name": "Non-Conventional Energy" },
-    { "branch": "CSE", "semester": 5, "slug": "software-engg", "code": "", "name": "Software Engineering" },
-
-    { "branch": "CSE", "semester": 6, "slug": "cloud-computing", "code": "", "name": "Cloud Computing" },
-    { "branch": "CSE", "semester": 6, "slug": "data-mining", "code": "", "name": "Data Mining" },
-
-    { "branch": "CSE", "semester": 7, "slug": "applied-cryptography", "code": "", "name": "Applied Cryptography" },
-    { "branch": "CSE", "semester": 7, "slug": "optimization-technique", "code": "", "name": "Optimization Techniques" }
+    {
+      "branch": "CSE",
+      "semester": 1,
+      "slug": "c",
+      "code": "",
+      "name": "C Programming"
+    },
+    {
+      "branch": "CSE",
+      "semester": 1,
+      "slug": "chemistry",
+      "code": "",
+      "name": "Chemistry"
+    },
+    {
+      "branch": "CSE",
+      "semester": 1,
+      "slug": "digital-design",
+      "code": "",
+      "name": "Digital Design"
+    },
+    {
+      "branch": "CSE",
+      "semester": 1,
+      "slug": "engg-math-1",
+      "code": "",
+      "name": "Engineering Mathematics I"
+    },
+    {
+      "branch": "CSE",
+      "semester": 1,
+      "slug": "it-workshop",
+      "code": "",
+      "name": "IT Workshop"
+    },
+    {
+      "branch": "CSE",
+      "semester": 2,
+      "slug": "coa",
+      "code": "",
+      "name": "Computer Organization and Architecture"
+    },
+    {
+      "branch": "CSE",
+      "semester": 2,
+      "slug": "communicative-english",
+      "code": "",
+      "name": "Communicative English"
+    },
+    {
+      "branch": "CSE",
+      "semester": 2,
+      "slug": "engg-math-2",
+      "code": "",
+      "name": "Engineering Mathematics II"
+    },
+    {
+      "branch": "CSE",
+      "semester": 2,
+      "slug": "engg-physics",
+      "code": "",
+      "name": "Engineering Physics"
+    },
+    {
+      "branch": "CSE",
+      "semester": 2,
+      "slug": "web-tech",
+      "code": "",
+      "name": "Web Technology"
+    },
+    {
+      "branch": "CSE",
+      "semester": 3,
+      "slug": "data-structure",
+      "code": "",
+      "name": "Data Structures"
+    },
+    {
+      "branch": "CSE",
+      "semester": 3,
+      "slug": "dbms",
+      "code": "",
+      "name": "Database Management Systems"
+    },
+    {
+      "branch": "CSE",
+      "semester": 3,
+      "slug": "dmgt",
+      "code": "",
+      "name": "DMGT"
+    },
+    {
+      "branch": "CSE",
+      "semester": 3,
+      "slug": "ethics",
+      "code": "",
+      "name": "Social and Professional Ethics"
+    },
+    {
+      "branch": "CSE",
+      "semester": 3,
+      "slug": "oop",
+      "code": "",
+      "name": "Object-Oriented Programming"
+    },
+    {
+      "branch": "CSE",
+      "semester": 3,
+      "slug": "os",
+      "code": "",
+      "name": "Operating Systems"
+    },
+    {
+      "branch": "CSE",
+      "semester": 4,
+      "slug": "ai",
+      "code": "",
+      "name": "Artificial Intelligence"
+    },
+    {
+      "branch": "CSE",
+      "semester": 4,
+      "slug": "atcd",
+      "code": "",
+      "name": "ATCD"
+    },
+    {
+      "branch": "CSE",
+      "semester": 4,
+      "slug": "computer-network",
+      "code": "",
+      "name": "Computer Networks"
+    },
+    {
+      "branch": "CSE",
+      "semester": 4,
+      "slug": "daa",
+      "code": "",
+      "name": "Design and Analysis of Algorithms"
+    },
+    {
+      "branch": "CSE",
+      "semester": 5,
+      "slug": "information-security",
+      "code": "",
+      "name": "Information Security"
+    },
+    {
+      "branch": "CSE",
+      "semester": 5,
+      "slug": "iot",
+      "code": "",
+      "name": "Internet of Things"
+    },
+    {
+      "branch": "CSE",
+      "semester": 5,
+      "slug": "machine-learning",
+      "code": "",
+      "name": "Machine Learning"
+    },
+    {
+      "branch": "CSE",
+      "semester": 5,
+      "slug": "non-conventional-energy",
+      "code": "",
+      "name": "Non-Conventional Energy"
+    },
+    {
+      "branch": "CSE",
+      "semester": 5,
+      "slug": "software-engg",
+      "code": "",
+      "name": "Software Engineering"
+    },
+    {
+      "branch": "CSE",
+      "semester": 6,
+      "slug": "cloud-computing",
+      "code": "",
+      "name": "Cloud Computing"
+    },
+    {
+      "branch": "CSE",
+      "semester": 6,
+      "slug": "data-mining",
+      "code": "",
+      "name": "Data Mining"
+    },
+    {
+      "branch": "CSE",
+      "semester": 7,
+      "slug": "applied-cryptography",
+      "code": "",
+      "name": "Applied Cryptography"
+    },
+    {
+      "branch": "CSE",
+      "semester": 7,
+      "slug": "optimization-technique",
+      "code": "",
+      "name": "Optimization Techniques"
+    }
   ]
 }
