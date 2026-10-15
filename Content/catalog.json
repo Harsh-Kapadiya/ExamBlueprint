@@ -208,6 +208,13 @@
       "slug": "optimization-technique",
       "code": "",
       "name": "Optimization Techniques"
+    },
+    {
+      "branch": "CSE",
+      "semester": 4,
+      "slug": "operation-research",
+      "code": "",
+      "name": "Operation Research"
     }
   ]
 }
