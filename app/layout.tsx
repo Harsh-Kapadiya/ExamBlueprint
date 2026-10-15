@@ -6,9 +6,8 @@ import Search from "@/components/Search";
 import { REPO } from "@/lib/rules";
 
 export const metadata: Metadata = {
-  title: { default: "pyq: the paper before the paper", template: "%s | pyq" },
-  description:
-    "Question papers your seniors already sat, handed down for NIT Patna CSE students. Free, no sign-in.",
+  title: { default: "PYQ: the paper before the paper", template: "%s | pyq" },
+  description: "Question papers your seniors already sat. Free, no sign-in.",
 };
 
 export default function RootLayout({
@@ -23,10 +22,7 @@ export default function RootLayout({
           <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 md:px-6">
             <Link href="/" className="flex items-baseline gap-2 rounded-md">
               <span className="text-xl font-semibold tracking-tighter">
-                pyq
-              </span>
-              <span className="text-sm tracking-tight text-muted-foreground">
-                NIT Patna
+                Exam Blueprint
               </span>
             </Link>
             <Search />
