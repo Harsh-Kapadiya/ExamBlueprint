@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Search from "@/components/Search";
 import { REPO } from "@/lib/rules";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: { default: "PYQ: the paper before the paper", template: "%s | pyq" },
@@ -44,6 +45,7 @@ export default function RootLayout({
             </p>
           </div>
         </footer>
+        <SpeedInsights />
       </body>
     </html>
   );
