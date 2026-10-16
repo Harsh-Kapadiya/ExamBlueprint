@@ -1,7 +1,7 @@
 // Every content rule in one place (README §B3, §B5). Pure TypeScript with no Node or browser
 // APIs, so the admin panel, the build and the CI check all enforce exactly the same rules.
 
-export const REPO = 'Harsh-Kapadiya/pyq';
+export const REPO = 'Harsh-Kapadiya/ExamBlueprint';
 export const BRANCH = 'main';
 export const MAX_BYTES = 6 * 1024 * 1024; // V-02
 export const MAX_FILES = 20; // V-07

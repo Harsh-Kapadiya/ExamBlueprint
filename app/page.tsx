@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <>
       <Hero
-        eyebrow="Made by NIT Patna students"
+        eyebrow="Made by Your seniors"
         eyebrowHref={`https://github.com/${REPO}`}
         title="The paper before the paper."
         subtitle="Your seniors already sat it. Here are their midsem, endsem and supplementary papers, handed down batch to batch. Free, no sign-in."
