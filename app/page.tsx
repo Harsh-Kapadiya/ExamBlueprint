@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Analytics } from "@vercel/analytics/next"
 import { ArrowUpRight } from 'lucide-react';
 import { Hero } from '@/components/ui/hero-1';
 import { Button } from '@/components/ui/button';
