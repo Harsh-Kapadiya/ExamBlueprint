@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Search from "@/components/Search";
 import { REPO } from "@/lib/rules";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
@@ -45,6 +46,7 @@ export default function RootLayout({
             </p>
           </div>
         </footer>
+        <SpeedInsights />
         <Analytics />
       </body>
     </html>

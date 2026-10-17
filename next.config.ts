@@ -3,10 +3,10 @@ import type { NextConfig } from 'next';
 // NFR-SEC-04. Admin uploads talk to api.github.com straight from the browser; sign-in goes via github.com.
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https://avatars.githubusercontent.com",
-  "connect-src 'self' https://api.github.com",
+  "connect-src 'self' https://api.github.com https://vitals.vercel-insights.com",
   "frame-src 'self'",
   "frame-ancestors 'self'",
   "form-action 'self' https://github.com",
